@@ -1,20 +1,21 @@
 
 import React, { useState } from 'react';
-// import { useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../../../Assets/Logo/userManagementLogo-1.webp';
-// import { AuthContext } from '../../../Provider/AuthProvider';
+import { AuthContext } from '../../../provider/AuthProvider';
+
 
 const Header = () => {
 
  
-// const {user,logOut} = useContext(AuthContext);
+const {user,logOut} = useContext(AuthContext);
 
-// const handleLogOut = ()=> {
-//   logOut()
-//   .then(()=> {})
-//   .catch(error => console.log(error))
-// }
+const handleLogOut = ()=> {
+  logOut()
+  .then(()=> {})
+  .catch(error => console.log(error))
+}
 
 
 
@@ -30,18 +31,18 @@ const Header = () => {
     
 
      
-     {/* {user?.email? <>
+     {user?.email? <>
       
      
       <li><button onClick={handleLogOut} >Log Out</button></li>
-      <Link to='/profile'><span className='pt-8 pt-[40px] text-red-500'>{user?.displayName}</span></Link>
+     <li> <Link><span >{user?.displayName}</span></Link></li>
      
      </>:
     
     <li><Link to='/login'>Login</Link></li>}
      {
-              user && <img className='ms-4 rounded-full' title= {user.displayName}style={{"height" : "38px", "width" : "38px"}} src={user.photoURL} alt="" />
-            } */}
+              user && <img className='ms-4 rounded-full' title= {user?.displayName}style={{"height" : "38px", "width" : "38px"}} src={user?.photoURL} alt="" />
+            }
     
     </>
     
@@ -62,7 +63,7 @@ const Header = () => {
             </ul>
           </div>
           <Link to='/' className="w-[53px] h-[53px] mr-2 rounded-full "><img style={{ width:70}} src={logo} alt="" /></Link>
-          <h5 className='text-3xl font-bold '>College Hunts</h5>
+          <h5 className='text-3xl font-bold '>User Management</h5>
         </div>
           
         <div className="navbar-center hidden lg:flex">
