@@ -1,61 +1,61 @@
-import React from 'react';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
 import { AuthContext } from '../provider/AuthProvider';
 
+const UpdateUser = () => {
+    const singleUser = useLoaderData();
+    const {name, firstName, lastName, email, phone, photo, _id} = singleUser;
 
-const AddUser = () => {
-  const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const firstName = form.firstName.value;
-    const lastName = form.lastName.value;
-    const email = form.email.value;
-    const phone = form.phone.value;
-    const photo = form.photo.value;
-    
-    
-
-    const addUser = {
-      firstName,
-      lastName,
-      photo,
-      email,
-      phone
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const firstName = form.firstName.value;
+      const lastName = form.lastName.value;
+      const email = form.email.value;
+      const phone = form.phone.value;
+      const photo = form.photo.value;
+      
+      
+  
+      const updatedUser = {
+        firstName,
+        lastName,
+        photo,
+        email,
+        phone
+      };
+      console.log(updatedUser);
+  
+      fetch(`http://localhost:5000/user/${_id}`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.modifiedCount > 0) {
+            event.target.reset();
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'User Information Updated Successfully',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
     };
-    console.log(addUser);
-
-    fetch('http://localhost:5000/user', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(addUser),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.insertedId) {
-          event.target.reset();
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'User has been added',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
-  };
-
-  return (
-    <div>
+    return (
+        <div>
       <div className="container mx-auto flex justify-center items-center min-h-screen">
         <div className="w-full md:w-3/4 bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold mb-8 text-center">Add a User</h1>
+          <h1 className="text-3xl font-bold mb-8 text-center">Update User's Information: {firstName ? firstName : name}</h1>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="w-full md:w-1/2">
@@ -68,6 +68,8 @@ const AddUser = () => {
                     type="text"
                     name="firstName"
                     placeholder="First Name"
+
+                    defaultValue={firstName ? firstName : name}
                     className="input input-bordered w-full"
                   />
                 </label>
@@ -82,6 +84,7 @@ const AddUser = () => {
                     type="text"
                     name="lastName"
                     placeholder="Last Name"
+                    defaultValue={lastName ? lastName : name}
                     className="input input-bordered w-full"
                   />
                 </label>
@@ -94,10 +97,10 @@ const AddUser = () => {
                     <span className="label-text">Email</span>
                   </div>
                   <input
-                    required
+                    readOnly
                     type="text"
                     name="email"
-                    
+                   defaultValue={email}
                     placeholder="Email"
                     className="input input-bordered w-full"
                   />
@@ -113,6 +116,7 @@ const AddUser = () => {
                     type="text"
                     name="phone"
                     placeholder="Phone Number"
+                    defaultValue={phone}
                     className="input input-bordered w-full"
                   />
                 </label>
@@ -129,6 +133,7 @@ const AddUser = () => {
                     type="text"
                     name="photo"
                     placeholder="Photo URL"
+                    defaultValue={photo}
                     className="input input-bordered w-full"
                   />
                 </label>
@@ -138,14 +143,14 @@ const AddUser = () => {
            
             <input
               type="submit"
-              value="Add User"
+              value="Update User"
               className="btn  btn-error w-full  mt-8"
             />
           </form>
         </div>
       </div>
     </div>
-  );
+    );
 };
 
-export default AddUser;
+export default UpdateUser;

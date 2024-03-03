@@ -1,17 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
-const AllUsersCard = ({user}) => {
-    const {firstName, lastName, email, phone, photo, _id} = user;
+const UserDetails = () => {
+    const userDetails = useLoaderData();
+    const {name, firstName, lastName, email, phone, photo, _id} = userDetails;
     return (
         <div>
-           <section className=''>
-            <div className="relative flex w-full max-w-[26rem] h-[620px] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg   group">
-                <div className="relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
+            <section className='pt-28'>
+            <div className="pb-3 bg-base-100 shadow-xl mx-auto relative flex w-2/4  flex-col rounded-xl  bg-clip-border text-gray-700  my-5  group">
+            <h2 className='text-center text-3xl '>Details of {firstName ? firstName : name}</h2>
+                <div className=" relative mx-4 mt-4 overflow-hidden rounded-xl bg-blue-gray-500 bg-clip-border text-white shadow-lg shadow-blue-gray-500/40">
+                   
                     <img
                         src={photo}
                         alt="ui/ux review check"
-                        className="h-[230px] w-full group-hover:scale-110   "
+                        className="h-full w-full group-hover:scale-110   "
                     />
                     <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
                     <button
@@ -52,44 +55,31 @@ const AllUsersCard = ({user}) => {
                             
                         </p>
                </div>
-                    <div className=" flex items-center justify-between">
+                    <div className='text-center'>
                         
-                        <h6 className=" mb-1 block font-sans text-lg font-medium leading-snug tracking-normal text-blue-gray-900 antialiased">
-                            <span className='text-sm'>First Name: </span> {firstName}
+                    <h6 className=" mb-1 block font-sans text-xl font-medium leading-snug tracking-normal text-blue-gray-900 antialiased">
+                            <span className='text-lg font-normal'>First Name: </span> {firstName ? firstName : name}
                         </h6>
+                        <h6 className="mb-1 block font-[500] text-xl text-[17px]  leading-relaxed text-gray-700 antialiased">
+                        <span className='text-lg font-normal'>Last Name: </span> {lastName ? lastName : "Not Available" }
+                    </h6>
+                    <h6 className="mb-1 block font-[500] text-xl text-[17px]  leading-relaxed text-gray-700 antialiased">
+                        <span className='text-lg font-normal'>Email: </span> {email}
+                    </h6>
+                    <h6 className="mb-1 block font-[500] text-xl text-[17px]  leading-relaxed text-gray-700 antialiased">
+                        <span className='text-lg font-normal'>Phone Number: </span> {phone ? phone : 'Not Available'}
+                    </h6>
                         
                     </div>
-                    <h6 className="mb-1 block font-[500] text-base text-[17px]  leading-relaxed text-gray-700 antialiased">
-                        <span className='text-sm'>Last Name: </span> {lastName}
-                    </h6>
-                    <h6 className="mb-1 block font-[500] text-base text-[17px]  leading-relaxed text-gray-700 antialiased">
-                        <span className='text-sm'>Email: </span> {email}
-                    </h6>
-                    <h6 className="mb-1 block font-[500] text-base text-[17px]  leading-relaxed text-gray-700 antialiased">
-                        <span className='text-sm'>Phone Number: </span> {phone}
-                    </h6>
-                  
-
+                    <Link to={`/updateUser/${_id}`}>
+                    <button className='btn  btn-error w-full  mt-8'>Update User Information</button>
+                    </Link>
+                    
+                
                 </div>
-                <div className="mx-auto p-6 pt-3 flex justify-center">
-                <Link
-  to={`/userDetails/${_id}`}
-  className="block w-full select-none rounded-lg bg-pink-500 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-  type="button"
-  data-ripple-light="true"
-  style={{
-    position: 'absolute',
-    
-    left: 0,
-    bottom: 20,
-    left: 0,
-    marginLeft: '5%',
-    marginRight: '5%',
-    width: '90%'
-  }}
->
-  Details
-</Link>
+                <div className="p-6 pt-3">
+                   
+        
                 </div>
             </div>
 
@@ -100,4 +90,4 @@ const AllUsersCard = ({user}) => {
     );
 };
 
-export default AllUsersCard;
+export default UserDetails;

@@ -55,24 +55,7 @@ const handleGoogleSignin = ()=>{
               
             })
 
-//     Swal.fire({
-//       title: `${user?.displayName} Login Successfully`,
-//       showClass: {
-//         popup: `
-//   animate__animated
-//   animate__fadeInUp
-//   animate__faster
-// `,
-//       },
-//       hideClass: {
-//         popup: `
-//   animate__animated
-//   animate__fadeOutDown
-//   animate__faster
-// `,
-//       },
-//     });
-//     navigate('/')
+
   })
   .catch(error => {
     console.log('error', error.message);

@@ -13,7 +13,7 @@ const useUser = () => {
         setLoading(false);
       });
   }, []);
-  return [users, loading];
+  return [users, loading, setUsers];
 };
 
 export default useUser;
