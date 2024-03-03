@@ -2,6 +2,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import React from 'react';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { app } from '../../Firebase/firebase.config';
 
 import { AuthContext } from '../provider/AuthProvider';
@@ -11,7 +12,7 @@ const Login = () => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
 
-const {signIn} = useContext(AuthContext)
+const {signIn, user} = useContext(AuthContext)
 
 const navigate = useNavigate();
 
@@ -20,7 +21,58 @@ const handleGoogleSignin = ()=>{
   signInWithPopup(auth, googleProvider)
   .then(result => {
     const user = result.user;
-    navigate('/')
+
+    const savedUser = {name:user?.displayName, email: user?.email, photo: user?.photoURL}
+
+            fetch('http://localhost:5000/user',{
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: JSON.stringify(savedUser)
+            })
+            .then(res => res.json())
+            .then(() => {
+              
+                Swal.fire({
+                  title: `${user?.displayName} Login Successfully`,
+                  showClass: {
+                    popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `,
+                  },
+                  hideClass: {
+                    popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `,
+                  },
+                });
+                navigate('/')
+              
+            })
+
+//     Swal.fire({
+//       title: `${user?.displayName} Login Successfully`,
+//       showClass: {
+//         popup: `
+//   animate__animated
+//   animate__fadeInUp
+//   animate__faster
+// `,
+//       },
+//       hideClass: {
+//         popup: `
+//   animate__animated
+//   animate__fadeOutDown
+//   animate__faster
+// `,
+//       },
+//     });
+//     navigate('/')
   })
   .catch(error => {
     console.log('error', error.message);
@@ -41,6 +93,23 @@ const handleGoogleSignin = ()=>{
         signIn(email, password)
         .then(result => {
             const user = result.user;
+            Swal.fire({
+              title: `${user?.displayName} Login Successfully`,
+              showClass: {
+                popup: `
+          animate__animated
+          animate__fadeInUp
+          animate__faster
+        `,
+              },
+              hideClass: {
+                popup: `
+          animate__animated
+          animate__fadeOutDown
+          animate__faster
+        `,
+              },
+            });
             navigate('/')
             console.log(user);
         })

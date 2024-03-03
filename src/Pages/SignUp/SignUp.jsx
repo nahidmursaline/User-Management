@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { AuthContext } from '../provider/AuthProvider';
 
 
 const SignUp = () => {
 
 
-    const {createUser, profileUpdate} = useContext(AuthContext)
+    const {createUser, profileUpdate,user} = useContext(AuthContext)
 
 
     const [error, setError] = useState('')
@@ -31,8 +32,42 @@ const SignUp = () => {
 
             setError('')
             event.target.reset();
-            navigate('/login')
+           
             profileUpdate({displayName: name, photoURL: photo})
+            const savedUser = {name, email, photo}
+
+            fetch('http://localhost:5000/user',{
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: JSON.stringify(savedUser)
+            })
+            .then(res => res.json())
+            .then(data => {
+              if(data.insertedId){
+                Swal.fire({
+                  title: 'User Registration Successful',
+                  showClass: {
+                    popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `,
+                  },
+                  hideClass: {
+                    popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `,
+                  },
+                });
+                navigate('/login')
+              }
+            })
+
+           
         })
         .catch(error => {
           console.log(error)
