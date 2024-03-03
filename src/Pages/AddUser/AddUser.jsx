@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 
 import { AuthContext } from '../provider/AuthProvider';
 
-
 const AddUser = () => {
   const { user } = useContext(AuthContext);
 
@@ -16,19 +15,17 @@ const AddUser = () => {
     const email = form.email.value;
     const phone = form.phone.value;
     const photo = form.photo.value;
-    
-    
 
     const addUser = {
       firstName,
       lastName,
       photo,
       email,
-      phone
+      phone,
     };
     console.log(addUser);
 
-    fetch('http://localhost:5000/user', {
+    fetch('https://user-management-server-bay.vercel.app/user', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -97,7 +94,6 @@ const AddUser = () => {
                     required
                     type="text"
                     name="email"
-                    
                     placeholder="Email"
                     className="input input-bordered w-full"
                   />
@@ -133,9 +129,8 @@ const AddUser = () => {
                   />
                 </label>
               </div>
-             
             </div>
-           
+
             <input
               type="submit"
               value="Add User"
